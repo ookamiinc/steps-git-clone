@@ -208,6 +208,10 @@ def do_clone()
 			fetch_command = "git fetch"
 			if $options[:pull_request_id] and $options[:pull_request_id].length > 0
 				fetch_command += " origin pull/#{$options[:pull_request_id]}/merge:#{$git_checkout_parameter}"
+			elsif $options[:tag] and $options[:tag].length > 0
+				fetch_command += " origin #{$options[:tag]}"
+			elsif $options[:branch] and $options[:branch].length > 0
+				fetch_command += " origin #{$options[:branch]}"
 			end
 			if $options[:clone_depth] and $options[:clone_depth].length > 0
 				fetch_command += " --depth=#{$options[:clone_depth]}"
