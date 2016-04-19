@@ -221,7 +221,7 @@ def do_clone()
 			end
 
 			if $git_checkout_parameter != nil
-				if $options[:commit_hash]
+				unless $options[:commit_hash].empty?
 					if $options[:branch] == 'master'
 						unless system("git reset #{$git_checkout_parameter} --hard")
 							raise "Could not do reset master branch to #{$git_checkout_parameter}"
