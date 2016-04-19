@@ -221,8 +221,20 @@ def do_clone()
 			end
 
 			if $git_checkout_parameter != nil
-				unless system("git checkout #{$git_checkout_parameter}")
-					raise "Could not do checkout #{$git_checkout_parameter}"
+				if $options[:commit_hash]
+					if $options[:branch] == 'master'
+						unless system("git reset #{$git_checkout_parameter} --hard")
+							raise "Could not do reset master branch to #{$git_checkout_parameter}"
+						end
+					else
+						unless system("git checkout #{$git_checkout_parameter} -b #{$options[:branch]}")
+							raise "Could not do checkout #{$git_checkout_parameter} and create #{$options[:branch]} branch"
+						end
+					end
+				else
+					unless system("git checkout #{$git_checkout_parameter}")
+						raise "Could not do checkout #{$git_checkout_parameter}"
+					end
 				end
 
 				unless system(%Q{GIT_ASKPASS=echo GIT_SSH="#{$this_script_path}/ssh_no_prompt.sh" git submodule update --init --recursive})
